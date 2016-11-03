@@ -263,7 +263,7 @@ def acceptFile(f) {
 	// ignore subtitle files without matching video file
 	if (f.isSubtitle() && !f.dir.listFiles{ it.isVideo() && f.isDerived(it) }) {
 		log.fine "Ignore orphaned subtitles: $f"
-		return false	
+		return false
 	}
 
 	// process only media files (accept audio files only if music mode is enabled)
@@ -359,7 +359,7 @@ def groups = input.groupBy{ f ->
 			[tvs: -1, mov:  1, fun: { detectMovie(f, false).aliasNames.find{ fn.contains(norm(it)) } } ]
 		]
 
-		def score = [tvs: 0, mov: 0]		
+		def score = [tvs: 0, mov: 0]
 		metrics.each{
 			if (tvs && mov && it.fun()) {
 				score.tvs += it.tvs
@@ -508,7 +508,7 @@ if (getRenameLog().size() > 0) {
 		return "FileBot finished processing $count files"
 	}.memoize()
 
-	def getNotificationMessage = { prefix = '• ', postfix = '\n' -> 
+	def getNotificationMessage = { prefix = '• ', postfix = '\n' ->
 		return ut.title ?: (input.findAll{ !it.isSubtitle() } ?: input).collect{ relativeInputPath(it) as File }.root.nameWithoutExtension.unique().collect{ prefix + it }.join(postfix).trim()
 	}.memoize()
 
@@ -517,8 +517,8 @@ if (getRenameLog().size() > 0) {
 		kodi.each{ instance ->
 			log.fine "Notify Kodi: $instance"
 			tryLogCatch {
-				showNotification(instance.host, instance.port ?: 8080, getNotificationTitle(), getNotificationMessage(), 'http://app.filebot.net/icon.png')
-				scanVideoLibrary(instance.host, instance.port ?: 8080)
+				showNotification('kodi', 'kodi', instance.host, instance.port ?: 8080, getNotificationTitle(), getNotificationMessage(), 'http://app.filebot.net/icon.png')
+				scanVideoLibrary('kodi', 'kodi', instance.host, instance.port ?: 8080)
 			}
 		}
 	}
@@ -561,7 +561,7 @@ if (getRenameLog().size() > 0) {
 	// messages used for email / pushbullet reports
 	def getReportSubject = { getNotificationMessage('', ' | ') }
 	def getReportTitle = { '[FileBot] ' + getReportSubject() }
-	def getReportMessage = { 
+	def getReportMessage = {
 		def renameLog = getRenameLog()
 		'''<!DOCTYPE html>\n''' + XML {
 			html {
