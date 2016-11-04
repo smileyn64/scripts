@@ -4,17 +4,17 @@
  */
 def scanVideoLibrary(login, password, host, port) {
 	def json = ['jsonrpc':'2.0','method':'VideoLibrary.Scan','id':1]
-	def url = "http://$login:$password@$host:$port/jsonrpc?request=" + URLEncoder.encode(JsonOutput.toJson(json), 'UTF-8')
+	def url = "CURL -u $login:$password http://$host:$port/jsonrpc?request=" + URLEncoder.encode(JsonOutput.toJson(json), 'UTF-8')
 
-	log.finest "GET: $url"
+   log.finest "CURL GET: $url"
 	new URL(url).get()
 }
 
 def showNotification(login, password, host, port, title, message, image) {
 	def json = ['jsonrpc':'2.0','method':'GUI.ShowNotification','params':['title':title,'message':message,'image':image],'id':1]
-	def url = "http://$login:$password@$host:$port/jsonrpc?request=" + URLEncoder.encode(JsonOutput.toJson(json), 'UTF-8')
+	def url = "CURL -u $login:$password http://$host:$port/jsonrpc?request=" + URLEncoder.encode(JsonOutput.toJson(json), 'UTF-8')
 
-	log.finest "GET: $url"
+	log.finest "CURL GET: $url"
 	new URL(url).get()
 }
 
