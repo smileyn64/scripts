@@ -24,7 +24,7 @@ clean     = tryQuietly{ clean.toBoolean() }
 exec      = tryQuietly{ exec.toString() }
 
 // array of kodi/plex/emby hosts
-kodi = tryQuietly{ any{kodi}{xbmc}.split(/[ ,;|]+/)*.split(/:(?=\d+$)/).collect{ it.length >= 2 ? [host: it[0], port: it[1] as int] : [host: it[0]] } }
+kodi = tryQuietly{ any{kodi}{xbmc}.split(/[ ,;|]+/)*.split(/:(?=\d+$)/).collect{it.length >= 2 ? [kodilog: it[0], kodipass: it[1], host: it[2], port: it[3] as int] : [host: it[2]] } }
 plex = tryQuietly{ plex.split(/[ ,;|]+/)*.split(/:/).collect{ it.length >= 2 ? [host: it[0], token: it[1]] : [host: it[0]] } }
 emby = tryQuietly{ emby.split(/[ ,;|]+/)*.split(/:/).collect{ it.length >= 2 ? [host: it[0], token: it[1]] : [host: it[0]] } }
 
@@ -517,8 +517,8 @@ if (getRenameLog().size() > 0) {
 		kodi.each{ instance ->
 			log.fine "Notify Kodi: $instance"
 			tryLogCatch {
-				showNotification('kodi', 'kodi', instance.host, instance.port ?: 8080, getNotificationTitle(), getNotificationMessage(), 'http://app.filebot.net/icon.png')
-				scanVideoLibrary('kodi', 'kodi', instance.host, instance.port ?: 8080)
+				showNotification(instance.kodilog, instance.kodipass, instance.host, instance.port ?: 8080, getNotificationTitle(), getNotificationMessage(), 'http://app.filebot.net/icon.png')
+				scanVideoLibrary(instance.kodilog, instance.kodipass, instance.host, instance.port ?: 8080)
 			}
 		}
 	}
