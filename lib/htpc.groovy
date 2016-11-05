@@ -2,9 +2,9 @@
 /**
  * Kodi helper functions
  */
-def scanVideoLibrary(login, password, host, port) {
+def scanVideoLibrary(kodilog, kodipass, host, port) {
 	def json = ['jsonrpc':'2.0','method':'VideoLibrary.Scan','id':1]
-	def url = "CURL -u $login:$password http://$host:$port/jsonrpc?request=" + URLEncoder.encode(JsonOutput.toJson(json), 'UTF-8')
+	def url = "CURL -u $kodilog:$kodipass http://$host:$port/jsonrpc?request=" + URLEncoder.encode(JsonOutput.toJson(json), 'UTF-8')
 
    log.finest "CURL GET: $url"
 	new URL(url).get()
